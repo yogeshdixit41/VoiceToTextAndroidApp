@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Green Voice Dialer</string>
+    <string name="title_activity_list_view">ListView</string>
+    <string name="title_activity_lview">LView</string>
+    <string name="hintTxtItem">Enter an item here</string>
+    <string name="txtEmpty">No contacts</string>
+    <string name="title_activity_vi_list">ViList</string>
+    <string name="search">search</string>
+    <string name="title_activity_help">Help</string>
+    <string name="Help">HELP</string>
+    <string name="Help1">&gt; To start with the voice dialler tap on the record logo button on the main screen</string>
+    <string name="Help2">&gt; You need to have network connection for Voice Dialler to perform its task</string>
+    <string name="Help3">&gt; Once the contact name is recorded wait for the dialler to dial the call</string>
+    <string name="Help4">&gt; If dialler does\'nt find the appropriate contact in your contacts list please try again or go to more option and try to serach the name using keypad</string>
+    <string name="version">Ver:0.0.1</string>
+    <string name="developedby">Powered By:@iDispatch Technologies</string>
+    <string name="title_activity_splash_screen">GreenVoiceDialler</string>
+    <string name="splash">splash</string>
+	<string name="main_activity_help1">Tap the button</string>
+	<string name="main_activity_help2">and speak to dial</string>
+</resources>
