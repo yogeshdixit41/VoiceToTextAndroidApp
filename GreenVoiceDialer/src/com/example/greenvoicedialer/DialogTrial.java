@@ -33,7 +33,7 @@ public class DialogTrial extends DialogFragment {
 			public void onClick(DialogInterface dialog, int id) {
 				Intent displayList = new Intent(getActivity(), ViList.class);
 				//passing message value as extra message to intent
-				displayList.putExtra(MainActivity.EXTRA_MESSAGE,MainActivity.message);
+				displayList.putExtra(MainActivity.EXTRA_MESSAGE,MainActivity.splitMessage[1]);
 				startActivity(displayList);
 				// TODO Auto-generated method stub
 				

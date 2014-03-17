@@ -49,7 +49,7 @@ public class ViList extends ListActivity{
         
         setContentView(R.layout.activity_vi_list);
         Toast.makeText(getApplicationContext(), NAME, Toast.LENGTH_SHORT).show();
-        display_list(NAME,3);
+        display_list( NAME, (NAME.length())/2 );
         /** Setting a custom layout for the list activity */
         
         
@@ -101,17 +101,18 @@ public class ViList extends ListActivity{
  				try {
  						
  					//Temp_name=value.substring(0, 2);
- 					Temp_name=new String(searchString.substring(0, searchStringLength));
+ 					//Temp_name= new String(searchString.substring(0, searchStringLength));
  					//Toast.makeText(getApplicationContext(),searchStringLength,Toast.LENGTH_SHORT).show();
  	 				 phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+ 	 				 phones.moveToFirst();
  	 					while(phones.moveToNext())
  	 					{
- 	 						
- 	 						
  	 						Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
  	 						//String Temp_pName=Name.substring(0, 2);
- 	 						Temp_pName=new String(Name.substring(0,searchStringLength));
- 	 						if(Temp_name.compareToIgnoreCase(Temp_pName)==0)
+ 	 						//Temp_pName=new String(Name.substring(0,searchStringLength));
+ 	 						//Toast.makeText(getApplicationContext(), searchString, Toast.LENGTH_SHORT).show();
+ 	 						//Toast.makeText(getApplicationContext(), Name, Toast.LENGTH_LONG).show();
+ 	 						if(	(Name.toLowerCase()).contains(searchString.toLowerCase()) )//if(Temp_name.compareToIgnoreCase(Temp_pName)==0)
  	 						{
  	 							//Toast.makeText(getApplicationContext(), Name, Toast.LENGTH_SHORT).show();
  	 							list.add(Name);

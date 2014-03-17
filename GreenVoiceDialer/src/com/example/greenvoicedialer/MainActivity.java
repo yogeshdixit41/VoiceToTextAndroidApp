@@ -31,6 +31,7 @@ import android.widget.Toast;
 	public static String EXTRA_MESSAGE = "PIYUSH";
 	public static final int RESULT_SPEECH = 1234;
 	public static String message;
+	public static String[] splitMessage;
 	
 
     @Override//Start of Activity Life Cycle
@@ -133,9 +134,11 @@ import android.widget.Toast;
 			{
 				ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				message = text.get(0);
+				splitMessage = message.split(" ", 2);
 				
+				if(splitMessage.length>1){
 				
-				
+				if(splitMessage[0].equalsIgnoreCase("call")){
 				Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
 				
 				
@@ -144,7 +147,7 @@ import android.widget.Toast;
 					 String Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 					 String Number=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 					 	
-					 	if(Name.compareToIgnoreCase(message)== 0)
+					 	if(Name.compareToIgnoreCase(splitMessage[1])== 0)
 					 		{
 					 			flag=1;
 					 			String url = "tel:"+Number;
@@ -161,6 +164,15 @@ import android.widget.Toast;
 					 df.show(getSupportFragmentManager(), "MyDialog"); 
 
 				 }
+			 }
+				else{
+					
+					Toast.makeText(getApplicationContext(), "Please say contact name followed by call keyword", Toast.LENGTH_LONG).show();
+				}
+				}
+				else{
+					Toast.makeText(getApplicationContext(), "Please say contact name followed by call keyword", Toast.LENGTH_LONG).show();
+				}
 			}// end of inner if
 			break;
 			
