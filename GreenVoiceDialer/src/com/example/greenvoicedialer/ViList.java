@@ -45,11 +45,11 @@ public class ViList extends ListActivity{
         super.onCreate(savedInstanceState);
         //get the extramessage from intent passed
         Intent displayList =getIntent();
-        final String NAME=displayList.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        final String[] NAME=displayList.getStringArrayExtra(MainActivity.EXTRA_MESSAGE);
         
         setContentView(R.layout.activity_vi_list);
-        Toast.makeText(getApplicationContext(), NAME, Toast.LENGTH_SHORT).show();
-        display_list(NAME,3);
+        Toast.makeText(getApplicationContext(), NAME[1], Toast.LENGTH_SHORT).show();
+        display_list( NAME[1], (NAME[1].length())/2, NAME[0] );
         /** Setting a custom layout for the list activity */
         
         
@@ -77,7 +77,7 @@ public class ViList extends ListActivity{
 				// TODO Auto-generated method stub
 				//String search_value=getText(R.id.txtItem).toString();
 				//Toast.makeText(getApplicationContext(), changed_text,Toast.LENGTH_SHORT).show();
-				display_list(changed_text.toString(),changed_text.length());
+				display_list(changed_text.toString(),changed_text.length(), NAME[0]);
 				
 			}
 		});
@@ -88,7 +88,7 @@ public class ViList extends ListActivity{
     
     /** displaying the list of the best match contacts */
     
-    public void display_list(final String searchString,int searchStringLength)
+    public void display_list(final String searchString,int searchStringLength, final String actionTOPerform)
     {
     	  
          listview =(ListView)findViewById(android.R.id.list);
@@ -101,17 +101,18 @@ public class ViList extends ListActivity{
  				try {
  						
  					//Temp_name=value.substring(0, 2);
- 					Temp_name=new String(searchString.substring(0, searchStringLength));
+ 					//Temp_name= new String(searchString.substring(0, searchStringLength));
  					//Toast.makeText(getApplicationContext(),searchStringLength,Toast.LENGTH_SHORT).show();
  	 				 phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+ 	 				 phones.moveToFirst();
  	 					while(phones.moveToNext())
  	 					{
- 	 						
- 	 						
  	 						Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
  	 						//String Temp_pName=Name.substring(0, 2);
- 	 						Temp_pName=new String(Name.substring(0,searchStringLength));
- 	 						if(Temp_name.compareToIgnoreCase(Temp_pName)==0)
+ 	 						//Temp_pName=new String(Name.substring(0,searchStringLength));
+ 	 						//Toast.makeText(getApplicationContext(), searchString, Toast.LENGTH_SHORT).show();
+ 	 						//Toast.makeText(getApplicationContext(), Name, Toast.LENGTH_LONG).show();
+ 	 						if(	(Name.toLowerCase()).contains(searchString.toLowerCase()) )//if(Temp_name.compareToIgnoreCase(Temp_pName)==0)
  	 						{
  	 							//Toast.makeText(getApplicationContext(), Name, Toast.LENGTH_SHORT).show();
  	 							list.add(Name);
@@ -148,12 +149,22 @@ public class ViList extends ListActivity{
 		        if(Name.compareToIgnoreCase(callcontact)== 0)
 		        {
 		        	
-		        	
+		        	if(actionTOPerform.equalsIgnoreCase("call"))
+		        	{
 		        	//Intent call = new Intent(Intent.ACTION_CALL);
 		        	String url = "tel:"+Number;
 		            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
 		        	//call.setData(Uri.parse(no));
 		        	startActivity(intent);
+		        	}
+		        	else if(actionTOPerform.equalsIgnoreCase("message"))
+		        	{
+		        		String url = "sms:"+Number;
+			            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			        	//call.setData(Uri.parse(no));
+			        	startActivity(intent);
+		        		
+		        	}
 		        }
 			}
     		

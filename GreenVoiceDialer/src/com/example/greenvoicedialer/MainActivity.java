@@ -31,6 +31,7 @@ import android.widget.Toast;
 	public static String EXTRA_MESSAGE = "PIYUSH";
 	public static final int RESULT_SPEECH = 1234;
 	public static String message;
+	public static String[] splitMessage;
 	
 
     @Override//Start of Activity Life Cycle
@@ -133,34 +134,79 @@ import android.widget.Toast;
 			{
 				ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 				message = text.get(0);
+				splitMessage = message.split(" ", 2);
+				
+				if(splitMessage.length>1)
+				{
+				
+					if(splitMessage[0].equalsIgnoreCase("call"))
+					{
+						Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
 				
 				
-				
-				Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
-				
-				
-				 while (phones.moveToNext())
-			        {
-					 String Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-					 String Number=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+						while (phones.moveToNext())
+			        		{
+								String Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+								String Number=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 					 	
-					 	if(Name.compareToIgnoreCase(message)== 0)
-					 		{
-					 			flag=1;
-					 			String url = "tel:"+Number;
-					 			Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
-					 			startActivity(intent);
-					 		}
-			        }
+								if(Name.compareToIgnoreCase(splitMessage[1])== 0)
+					 				{
+					 					flag=1;
+					 					String url = "tel:"+Number;
+					 					Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url));
+					 					startActivity(intent);
+					 				}
+			        		}
 				 
 				 
-				 if(flag==0)
-				 {
-					 Toast.makeText(getApplicationContext(), "Exact match not found", Toast.LENGTH_SHORT).show();
-					 DialogFragment df=new DialogTrial();
-					 df.show(getSupportFragmentManager(), "MyDialog"); 
+						if(flag==0)
+							{
+								Toast.makeText(getApplicationContext(), "Exact match not found", Toast.LENGTH_SHORT).show();
+								DialogFragment df=new DialogTrial();
+								df.show(getSupportFragmentManager(), "MyDialog"); 
 
-				 }
+							}
+					}
+				
+					else if(splitMessage[0].equalsIgnoreCase("message"))
+					{
+					
+						Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+						
+						
+						while (phones.moveToNext())
+			        		{
+								String Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+								String Number=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					 	
+								if(Name.compareToIgnoreCase(splitMessage[1])== 0)
+					 				{
+					 					flag=1;
+					 					String url = "sms:"+Number;
+					 					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+					 					startActivity(intent);
+					 				}
+			        		}
+				 
+				 
+						if(flag==0)
+							{
+								Toast.makeText(getApplicationContext(), "Exact match not found", Toast.LENGTH_SHORT).show();
+								DialogFragment df=new DialogTrial();
+								df.show(getSupportFragmentManager(), "MyDialog"); 
+
+							}
+					}
+					
+					else
+					{
+						Toast.makeText(getApplicationContext(), "Please say contact name followed by call or message keyword", Toast.LENGTH_LONG).show();
+					}
+				}
+				else
+				{
+					Toast.makeText(getApplicationContext(), "Please say contact name followed by call keyword", Toast.LENGTH_LONG).show();
+				}
 			}// end of inner if
 			break;
 			
